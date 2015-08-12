@@ -1,7 +1,6 @@
 from rational import *
 
-### Constants:
-# Token kinds:
+### Constants for token types (to avoid magic strings and give good error messages if mistyped):
 lparen = 'lparen'
 rparen = 'rparen'
 frac_bar = 'frac_bar'
@@ -12,6 +11,7 @@ minus = 'minus'
 digits = 'digits'
 
 class Token:
+    """Simple token class. self.kind is the type of token and self.text is the actual characters making up the token."""
     def __init__(self, kind, text):
         self.kind = kind
         self.text = text
@@ -23,6 +23,7 @@ class Token:
         return 'Token(' + repr(self.kind) + ', ' + repr(self.text) + ')'
         
 class btree(object):
+    """Simple binary tree class, with a pretty-print __str__ magic method."""
     def __init__(self):
         self.left = None
         self.right = None
@@ -44,7 +45,9 @@ def is_int(_str):
         return False
 
 def pre():
-    print "Welcome to fraction calculator! Enter a math expression (excluding exponentiation, allowing fractions like 1//2 (meaning one half), and not allowing decimals/floats."
+    s = ("Welcome to fraction calculator! Enter a math expression,excluding exponentiation,\n"
+         "allowing fractions like 1//2 (meaning one half), and not allowing decimals/floats.")
+    print s
 
 def post():
     pass
@@ -55,7 +58,7 @@ def lexer(string):
     
     lexed = []
     next_token = ['', ''] # left side is kind, right side is text
-    # Build up a token until its fully identified. When it is, fill in its left side and return.
+    # Build up a token until its fully identified. When it is, fill in its token type and return.
     for i, char in enumerate(string):
         digit_list = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
         if char == '(':
@@ -106,6 +109,12 @@ def lexer(string):
     return lexed
     
 def parse(input):
+    """Takes a list of tokens (lexed input) and returns an AST of the btree class defined
+       above, with the data at each node being the given tokens.
+    
+       A simple parser using a syntax-tree building version of the shunting yard algorithm. 
+       // has higher precedence than the other four operators, which are standard, parens 
+       are handled correctly but not included in resulting AST."""
     output = []
     stack = []
 
@@ -154,7 +163,9 @@ def parse(input):
     return output[0]
     
 def run_ast(ast):
-    # Takes a btree binary tree with leaf nodes that have tokens as their `data` attribute
+    """Takes a btree binary tree with leaf nodes that have tokens as their `data` attribute; no return.
+    
+       Simply executes the given AST recursively."""
     if ast.data.kind == digits:
         try:
             return int(ast.data.text)
@@ -200,7 +211,10 @@ def run_ast(ast):
         raise(Exception("Parsing error"))
     
 def interpret(input):
-    # Should take string input and return true if we should keep going, false otherwise
+    """Should take string input and return true if we should keep going, false otherwise.
+    
+       This lexes, parses, and runs a line of math expressions in the proper syntax. 
+       Takes input stripped of all whitespace. The repl loop is handled in loop()."""
     if input == 'exit':
         return False
     lexed = lexer(input)
@@ -215,9 +229,13 @@ def interpret(input):
     return True
     
 def loop():
+    """No arguments or return values.
+    
+       Runs the REPL loop. The return value of interpret indicates whether to keep going (based
+       on receiving the 'exit' command). When interpret returns false, we exit the main loop."""
     ret = True
     while ret:
-        input = raw_input()
+        input = raw_input('--> ')
         input = "".join(input.split())
         ret = interpret(input)
 
