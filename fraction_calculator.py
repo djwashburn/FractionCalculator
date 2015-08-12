@@ -44,7 +44,7 @@ def is_int(_str):
         return False
 
 def pre():
-    print "Welcome to fraction calculator! very in progress"
+    print "Welcome to fraction calculator! Enter a math expression (excluding exponentiation, allowing fractions like 1//2 (meaning one half), and not allowing decimals/floats."
 
 def post():
     pass

@@ -3,7 +3,7 @@ FractionCalculator
 
 **Basic description**
 
-A simple calculator for working with infinite precision rational numbers (fraction and integer input), with a handwritten lexer and simple shunting-yard based parser, and a slightly unusual syntax.
+A simple calculator for working with infinite precision rational numbers (fraction and integer input), with a handwritten lexer and simple shunting-yard based parser, and a slightly unusual syntax. Written for fun, because my nice, overpriced TI-something calculator was in storage, and because I didn't like the normal input methods for fractions in most programming language REPLs, etc.
 
 **Syntax**
 
